@@ -35,14 +35,22 @@ jobs:
           extensions: mbstring, bcmath, pdo, mysql, dom, fileinfo
           coverage: none
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: Copy .env
         run: cp .env.example .env
 
       - name: Generate app key
         run: php artisan key:generate
-
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Install Node dependencies
         run: npm ci
