@@ -46,6 +46,12 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Create cache & storage folders
+        run: mkdir -p bootstrap/cache storage/framework/views storage/framework/cache
+
+      - name: Set correct file permissions
+        run: chmod -R 777 bootstrap/cache storage
+
       - name: Copy .env
         run: cp .env.example .env
 
@@ -57,9 +63,6 @@ jobs:
 
       - name: Build assets
         run: npm run build
-
-      - name: Set correct file permissions
-        run: chmod -R 777 storage bootstrap/cache
 
       - name: Prepare database
         env:
