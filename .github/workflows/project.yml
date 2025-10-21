@@ -35,6 +35,12 @@ jobs:
           extensions: mbstring, bcmath, pdo, mysql, dom, fileinfo
           coverage: none
 
+      - name: Create cache & storage folders
+        run: mkdir -p bootstrap/cache storage/framework/views storage/framework/cache
+
+      - name: Set correct file permissions
+        run: chmod -R 777 bootstrap/cache storage
+
       - name: Cache Composer dependencies
         uses: actions/cache@v3
         with:
@@ -45,12 +51,6 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Create cache & storage folders
-        run: mkdir -p bootstrap/cache storage/framework/views storage/framework/cache
-
-      - name: Set correct file permissions
-        run: chmod -R 777 bootstrap/cache storage
 
       - name: Copy .env
         run: cp .env.example .env
