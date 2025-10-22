@@ -10,9 +10,11 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_homepage_returns_successful_response_for_authenticated_user(): void
     {
-        $response = $this->get('/');
+        $user = \App\Models\User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/');
 
         $response->assertStatus(200);
     }
